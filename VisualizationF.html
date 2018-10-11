@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+  <style type="text/css">
+
+
+  .bar {
+  fill: steelblue;
+}
+
+.axis path {
+  display: none;
+}
+
+
+
+
+    #chart {
+    position: absolute;
+    margin: -100px 0 0 -200px;
+    top: 17%;
+    left: 25%;
+}
+
+
+#graph {
+   float: right;
+    top: 40%;
+    left: 60%;
+}
+
+h2 {
+    text-align: center;
+}
+
+#analysis {
+     position:absolute;
+    width:100%;
+    height:300px;
+
+
+    top:92%;
+    left:12%;
+    margin-left:-150px;
+
+}
+
+#heatmap {
+    position:absolute;
+    width:100%;
+    height:300px;
+
+
+    top:70%;
+    left:48%;
+    margin-left:-150px;
+}
+
+
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+.button3 {
+  background-color: green;
+  width: 250px;
+  height: 30px;
+  border-radius: 1px;
+  border-color: black;
+}
+
+  </style>
+
+
+  <script>
+
+    function openHeatmap()
+    {
+        window.open('heatmap.html','HeatMap','left=1200,top=400,width=420,height=350');
+    }
+
+function draw_pie(file_name)
+ {  
+    var width,height
+    var chartWidth, chartHeight
+    var margin
+    var svg = d3.select("#graph").append("svg")
+    var chartLayer = svg.append("g").classed("chartLayer", true)
+    
+    d3.csv(file_name, cast,  main)
+    
+    function cast(d) {
+        d.value = +d.value
+        return d 
+    }
+    
+    function main(data) {
+        setSize(data)
+        drawChart(data)    
+    }
+    
+    function setSize(data) {
+        width = document.querySelector("#graph").clientWidth
+        height = document.querySelector("#graph").clientHeight
+    
+        margin = {top:40, left:0, bottom:40, right:0 }
+        
+        
+        chartWidth = 270
+        chartHeight = 270
+        
+        svg.attr("width", 650).attr("height", 350)
+        
+        
+        chartLayer
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+           .attr("transform", "translate("+[40, 90]+")")
+            
+            
+    }
+    
+    function drawChart(data) {
+      
+        var arcs = d3.pie()
+            .sort(null)
+            .value(function(d) { return d.value; })
+            (data)
+        
+   
+        var arc = d3.arc()
+            .outerRadius(120)
+            .innerRadius(90)
+            .padAngle(0.03)
+            .cornerRadius(8)
+            
+        var pieG = chartLayer.selectAll("g")
+            .data([data])
+            .enter()
+            .append("g")
+            .attr("transform", "translate("+[chartWidth/2, chartHeight/2]+")")
+        
+        var block = pieG.selectAll(".arc")
+            .data(arcs)
+            
+        var newBlock = block.enter().append("g").classed("arc", true)
+            
+      
+        newBlock.append("path")
+            .attr("d", arc)
+            .attr("id", function(d, i) { return "arc-" + i })
+            .attr("stroke", "gray")
+            .attr("fill", function(d,i){ return d3.interpolateCool(Math.random()) })
+        
+       
+           newBlock.append("text")
+            .attr("dx", 55)
+            .attr("dy", -5)
+            .append("textPath")
+            .attr('style','font-size: 30')
+            .attr("xlink:href", function(d, i) { return "#arc-" + i; })
+            .text(function(d) { console.log(d); return d.data.name })
+    }
+  }
+
+</script>  
+
+
+
+
+  <meta charset="UTF-8">
+  <title> Pie Chart</title>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<!-- <body bgcolor="#000000"> -->
+  <body>
+   
+    <div id="chart">
+    </div>
+    <div id="graph" >
+      
+    </div>
+
+    <div id="heatmap">
+      <button class="button button3" onclick="openHeatmap();">Click here to see an heat map</button>
+    </div>
+
+
+
+
+
+
+
+   
+    <div id="analysis" >
+          <hr>
+          <h2><b>Analysis</b></h2>
+   <h3>You must list at least 3 bullet points of pattern findings from your interactive visualization.</h3>
+
+<ul style="list-style-type:circle">
+  <li>Users who frequently answers tend to vote more</li>
+  <li>Users who ask lot of questions generally answers less </li>
+  <li>Users who shares frequently also tend to vote more </li>
+</ul> 
+
+<h3>Explain the patterns in texts on the same page.</h3>
+The first point has been concluded by looking into data for the users “aaa” and “ddd” because both of them tend to answer and vote frequently. I also did some analysis on google analytics data and found that in most of the cases it is true.  
+
+The second point has been concluded after interacting with the pie chart ( Users “eee” and "ccc") and chart clearly shows that these users are interested in finding the solutions for their problems than contributing.
+
+The third point is from past experience, generally users share articles when they like them and also they tend to vote. If you look into data of user “bbb”, it proves our statement. For the relative comparison, stacked bar graph is required ( or heat map ).
+
+<br/>
+But to come to a final conclusion it is required to analyse data for large number of users by implementing algorithms and calculating probabilities. All these info will help to to build user model which will be of great value for both the user and website.
+<br/>
+<h3> Describe your steps to find the results and why does it matter (2pt). </h3>
+In order to find the results, I came up with lot of questions such as what are the top activities of the user? , can we find any relation between the activities? , is there dependency among the activities? etc.  These infinity list of questions will help to find out the hidden pattern to bring business insights. Apart from asking questions, I analyzed the answers, looked into case studies, also went through research papers and used previous experience.
+
+
+    </div>
+
+
+
+</body>
+
+
+
+    <script >
+// var color = d3.scaleOrdinal(d3.schemeCategory20b);
+var color = d3.scaleOrdinal().range(['#4285F4','#34A853','#FBBC05','#EA4335','#7B1FA2','#FF1493']);        
+
+
+// var margin = {top: 100, right: 0, bottom: 0, left: 0};
+
+
+
+var arc = d3.arc()
+    .innerRadius(100)
+    .outerRadius(150);
+
+
+
+var svg1 = d3.select("#chart").append("svg")
+    .attr("width", 530)
+    .attr("height", 350);  // maximum area for drawing arc inside it
+
+var g = svg1.append("g")   // "g" for grouping not specific to D3 ( group similar attributes )
+    .attr("transform","translate(" + 200 + "," + 200 +")")  // transform position inside svg
+   // .attr("class","chartGroup");
+
+
+var pie = d3.pie()
+    .value(function(d) {
+    // console.log(d.count);
+     return d.count}) // returns number to display ( in 2nd column)
+   // .sort(null);
+
+// for displaying results when u hover
+var tooltip = d3.select('#chart')
+    .append('div')
+    .attr('class','tooltip')
+
+     
+
+
+tooltip.append('div')
+    .attr('class','label');
+tooltip.append('div')
+    .attr('class', 'count');
+tooltip.append('div')
+    .attr('class','percent');
+
+
+
+ d3.csv('input_donut.csv', function(error, dataset) {
+          dataset.forEach(function(d) {
+            d.count = +d.count;
+            d.enabled = true;
+          });   
+
+  
+
+  // drawing   
+var path = g.selectAll('path')
+    .data(pie(dataset))
+    .enter()
+    .append('path')
+        .attr('d',arc)
+        .attr('fill', function(d,i){
+            return color(d.data.action);
+        })
+    .each(function(d){this._current = d;});
+
+
+
+
+
+
+
+path.on('mousemove', function(d){
+      var xposSub = document.getElementById("chart").getBoundingClientRect().middle; 
+      var xpos = d3.event.x - xposSub + 100 
+      var ypos = d3.event.y  +100   
+      tooltip.style("left",-100 + "px")
+      tooltip.style("top",-500 + "px")  
+  
+
+  var total = d3.sum(dataset.map(function(d){
+      return (d.enabled) ? d.count : 0;
+    }));
+  var percent = Math.round(10000 * d.data.count / total) / 100;
+
+  tooltip.select('.label').html(d.data.action);
+  tooltip.select('.count').html(d.data.count);
+  tooltip.select('.percent').html(percent + '%');
+  tooltip.style('display', 'block');
+ 
+});
+   
+
+   path.on('click', function(d){
+    console.log(d.data.action);
+    if (d.data.action=="Voted") {
+      $('#graph').empty();
+      draw_pie("Voted.csv");
+
+
+   }
+   if(d.data.action=="Shared")
+   {
+    $('#graph').empty();
+    draw_pie("Shared.csv");
+   }
+
+   if(d.data.action=="AskedQuestion")
+   {
+    $('#graph').empty();
+    draw_pie("AskedQuestion.csv");
+   }
+
+   if(d.data.action=="Commented")
+   {
+    $('#graph').empty();
+    draw_pie("Commented.csv");
+   }
+
+
+
+  // var newWindow = window.open("donut.html", "hello", 'scrollbars=yes, width=' + 400 + ', height=' + 400 + ', top=' + 100 + ', left=' + 10);
+
+});
+   
+     
+
+
+
+
+     
+path.on('mouseout', function(d){
+    tooltip.style('display','none');
+
+});
+   
+
+
+
+var legendRectSize = 16;
+var legendSpacing = 10; 
+
+var legend = g.selectAll('.legend')
+    .data(color.domain()) 
+    .enter()
+        .append('g')
+        .attr('class','legend')
+        .attr('transform', function(d,i){
+            var height = legendRectSize + legendSpacing;
+            var offset = 150;       // y-axis position
+            var horz = 13 * legendRectSize;   // x-axis position
+            var vert = i * height-offset;
+            return 'translate(' + horz + ',' + vert + ')';
+        });
+
+    legend.append('rect')
+        .attr('width',legendRectSize)
+        .attr('height',legendRectSize)
+        .style('fill',color)
+        .style('stroke',color)
+
+        .on('click', function(label){
+        var rect = d3.select(this);
+  var enabled = true;
+  var totalEnabled = d3.sum(dataset.map(function(d) {
+    return (d.enabled) ? 1 : 0;
+  }));
+
+  if (rect.attr('class') === 'disabled') {
+    rect.attr('class', '');
+  } else {
+    if (totalEnabled < 2) return;
+    rect.attr('class', 'disabled');
+    enabled = false;
+  }
+
+  pie.value(function(d) {
+    if (d.label === label) d.enabled = enabled;
+    return (d.enabled) ? d.count : 0;
+  });
+
+
+
+
+  path = path.data(pie(dataset));
+
+  path.transition()
+    .duration(750)
+    .attrTween('d', function(d) {
+      var interpolate = d3.interpolate(this._current, d);
+      this._current = interpolate(0);
+      return function(t) {
+        return arc(interpolate(t));
+      };
+    });
+    });
+
+
+    legend.append('text')
+  .attr('x', 20)
+  .attr('y', 15)
+  .attr('style','font-size: 18')
+  .attr('alignment-baseline','middle')
+  .text(function(d) { return d; });
+
+ });
+
+
+    </script>
+
+
+
+
+
+
+  
+
+
+
+
+</html>
+
+
